@@ -51,17 +51,8 @@ title('Grayscale Image', 'FontName', 'Times New Roman', 'FontSize', 10);
 
 %% Step 4: Calculate Image's Histogram
 % 4-1: Calculate the Histogram of the Grayscale Image
-% 4-2: Number of Brightness Level
-L = max(GI(:)) + 1; 
-HIST = zeros(1, L);
-[Rows, Colms] = size(GI);
-for i = 1:Rows
-    for j = 1:Colms
-        Temp = GI(i, j);
-        HIST(Temp + 1) = HIST(Temp + 1) + 1;
-    end 
-end
-% 4-3: Plot the Histogram of the Grayscale Image
+HIST = ComputeHistogram(GI);
+% 4-2: Plot the Histogram of the Grayscale Image
 figure(3)
 bar(HIST)
 grid on; grid minor
@@ -98,6 +89,7 @@ title('Cumulative Distribution Function of Image', 'FontName', 'NewTimesRoman', 
 
 %% Step 7: Calculate Total Mean
 % step 7-1: Define Threshold Candidates from 0 to L-1 for Each Brightness Level
+L = max(GI(:)) + 1;
 ThrCandid = double(0:L - 1);
 % step 7-2: Compute Total Mean (MuToT) Based on PDF & Threshold Candidates
 MuToT = sum(ThrCandid .* PDF);
