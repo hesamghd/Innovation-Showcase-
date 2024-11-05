@@ -24,15 +24,23 @@ clc; clear; close all; warning off
 %% Step 1: Set Parameters of Figures
 % Set Default Figure Window Style to "Docked" to Organize Multiple Figures in One Window
 % Set Line Width, Marker Size, Font Style & Grid Parameters for Figures
-set(0,'DefaultFigureWindowStyle','docked')
+set(0,'DefaultFigureWindowStyle', 'docked')
 set(0, 'DefaultLineLineWidth', 2, 'DefaultLineMarkerSize', 10, 'DefaultAxesLineWidth', 2, 'DefaultAxesFontName', 'Times New Roman', 'DefaultAxesFontSize', 10, 'DefaultAxesFontWeight', 'Bold');
 set(groot,'defaultAxesXGrid','on'); set(groot,'defaultAxesYGrid','on'); set(groot,'defaultAxesXminorGrid','on'); set(groot,'defaultAxesYminorGrid','on')
 
 %% Step 2: Load & Display the Image
 % Step 2-1: Define the Images & Prompt User for Selection
-Images = {'coins.png', 'cameraman.tif', 'rice.png', 'saturn.png', 'peppers.png'};
-Img = imread(Images{input('Enter the number of the image to display (1 to 5): ')});
-% Step 2-2: Display the Original Image
+Images = {'coins.png', 'cameraman.tif', 'rice.png', 'saturn.png', 'peppers.png', 'printedtext.png'};
+fprintf('Select an image:\n1) coins.png\n2) cameraman.tif\n3) rice.png\n4) saturn.png\n5) peppers.png\n6) printedtext.png\n');
+Choice = input('Enter the Number of the Image to Display (1 to 6): ');
+
+% Validate User Input
+if Choice < 1 || Choice > 6 || ~isnumeric(Choice)
+    error('Invalid selection. Please enter a number between 1 and 6.');
+end
+
+% Step 2-2: Load and Display the Original Image
+Img = imread(Images{Choice});
 figure(1)
 imshow(Img)
 title('Original Image', 'FontName', 'NewTimesRoman', 'FontSize', 10)

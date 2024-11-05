@@ -6,20 +6,44 @@ clc; clear; close all; warning off
 set(0,'DefaultFigureWindowStyle','docked')
 set(0, 'DefaultLineLineWidth', 2, 'DefaultLineMarkerSize', 8, 'DefaultAxesLineWidth', 2, 'DefaultAxesFontName', 'Times New Roman', 'DefaultAxesFontSize', 14, 'DefaultAxesFontWeight', 'Bold');
 set(groot,'defaultAxesXGrid','on'); set(groot,'defaultAxesYGrid','on'); set(groot,'defaultAxesXminorGrid','on'); set(groot,'defaultAxesYminorGrid','on')
-%% step 2: Read GrayScale Image
-GI = imread('cameraman.tif');
+%% Step 2: Read Grayscale Image
+% Step 2-1: Define the Images & Prompt User for Selection
+Images = {'coins.png', 'cameraman.tif', 'rice.png', 'saturn.png', 'peppers.png', 'printedtext.png'};
+fprintf('Select an image:\n1) coins.png\n2) cameraman.tif\n3) rice.png\n4) saturn.png\n5) peppers.png\n6) printedtext.png\n');
+Choice = input('Enter the Number of the Image to Display (1 to 6): ');
+
+% 2-2: Validate User Input
+if Choice < 1 || Choice > 6 || ~isnumeric(Choice)
+    error('Invalid Selection. Please Enter a Number Between 1 and 6.');
+end
+
+% Step 2-3: Load and Display the Original Image
+Img = imread(Images{Choice});
 figure(1)
-imshow(GI)
-title('GrayScale Image', 'FontName', 'NewTimesRoman', 'fontsize', 8)
+imshow(Img)
+title('Original Image', 'FontName', 'NewTimesRoman', 'FontSize', 10)
+
+% Step 2-4: Check if the Image Is Colored, Convert to Grayscale if Necessary, and Display
+if size(Img, 3) > 1
+    GI = rgb2gray(Img); % Convert to Grayscale
+    % Step 2-5: Display the Grayscale Image
+    figure(2)
+    imshow(GI);
+    title('Grayscale Image', 'FontName', 'Times New Roman', 'FontSize', 10);
+else
+    GI = Img;
+end
+
+
 %% step 3: Padd Array - Pre
 % step 3-1: Padd Aray based on Pre & Replicate Method
 Nr = 100; Nc = 100; Dir = 'Pre';
-J1 =  PadArray(GI, [Nr Nc], Dir, 'Replicate');
+J1 =  PadArray(GI, [Nr Nc], Dir, 'ones');
 % step 3-2: Binary Image based on Mean
 Mu1 = ImageMean(J1, Nr, Nc, Dir);
 BW1 = GI >= Mu1;
 % step 3-3: Display the Result
-figure(2)
+figure(3)
 subplot(3, 3, 1)
 imshow(BW1)
 title('Binary Image - Padd Array - Pre - Replicate', 'FontName', 'NewTimesRoman', 'fontsize', 8)
